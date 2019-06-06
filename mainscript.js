@@ -1,6 +1,6 @@
 
-const suppliers = Vue.component("suppliers", {
-  template: `<h1>suppliers</h1>`
+const home = Vue.component("home", {
+  template: `<h1>home</h1>`
 });
 const houses = Vue.component("houses", {
   template: `<h1>houses</h1>`
@@ -40,7 +40,8 @@ template: `<table class="table">
 });
 
 const routes = [
-  { path: "/suppliers", component: suppliers },
+    { path: "/home", component: home },
+  { path: "/suppliers", component: userTable },
   { path: "/houses", component: houses }
 ];
 
