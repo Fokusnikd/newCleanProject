@@ -3,17 +3,22 @@ const home = Vue.component("home", {
 });
 
 const suppliersForm = Vue.component("sup-form", {
-    data: function() {
-      return {
-        fioValue: "",
-        mailValue: "",
-        birthdayValue: ""
-      };
-    },
-    template: ` <form>
+  data: function() {
+    return {
+      nameValue: "",
+      surNameValue: "",
+      mailValue: "",
+      userNameValue: ""
+    };
+  },
+  template: `<form>
     <div class="form-group">
-    <label for="exampleInputPassword1">Fio</label>
-    <input type="text" v-model="fioValue" class="form-control" id="exampleInputPassword1" placeholder="Your name">
+    <label for="exampleInputName">Name</label>
+    <input type="text" v-model="nameValue" class="form-control" id="exampleInputName" placeholder="Your name">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputSurName">Surname</label>
+    <input type="text" v-model="surNameValue" class="form-control" id="exampleInputSurName" placeholder="Your surname">
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
@@ -21,25 +26,26 @@ const suppliersForm = Vue.component("sup-form", {
       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-    <label for="exampleInputAge1">Age</label>
-    <input type="text" v-model="birthdayValue" class="form-control" id="exampleInputAge1" placeholder="Enter your age">
+    <label for="exampleInputUserName">UserName</label>
+    <input type="text" v-model="userNameValue" class="form-control" id="exampleInputUserName" placeholder="Enter your nickname">
   </div>
   <button type="submit" @click="handlebuttonclick($event)" class="btn btn-primary">Submit</button>
   </form>`,
-    methods: {
-      handlebuttonclick: function(e) {
-        e.preventDefault();
-  
-        var formdata = {
-          fio: this.fioValue,
-          mail: this.mailValue,
-          birthday: this.birthdayValue
-        };
-  
-        this.$emit("new-sup", formdata);
-      }
+  methods: {
+    handlebuttonclick: function(e) {
+      e.preventDefault();
+
+      var formdata = {
+        name: this.nameValue,
+        surname: this.surNameValue,
+        mail: this.mailValue,
+        username: this.userNameValue
+      };
+
+      this.$emit("new-sup", formdata);
     }
-  });
+  }
+});
 
 const houses = Vue.component("houses", {
   template: `<h1>houses</h1>`
