@@ -1,5 +1,13 @@
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 const home = Vue.component("home", {
-  template: `<h1>home</h1>`
+  template: "<h1>111</h1>"
 });
 
 const suppliersForm = Vue.component("sup-form", {
@@ -11,7 +19,7 @@ const suppliersForm = Vue.component("sup-form", {
       userNameValue: ""
     };
   },
-  template: `<form>
+  template: `<form  @submit="handlebuttonclick($event)">
     <div class="form-group">
     <label for="exampleInputName">Name</label>
     <input type="text" v-model="nameValue" class="form-control" id="exampleInputName" placeholder="Your name">
@@ -29,57 +37,56 @@ const suppliersForm = Vue.component("sup-form", {
     <label for="exampleInputUserName">UserName</label>
     <input type="text" v-model="userNameValue" class="form-control" id="exampleInputUserName" placeholder="Enter your nickname">
   </div>
-  <button type="submit" @click="handlebuttonclick($event)" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
   </form>`,
   methods: {
     handlebuttonclick: function(e) {
+      console.log(1);
       e.preventDefault();
 
       var formdata = {
-        name: this.nameValue,
-        surname: this.surNameValue,
-        mail: this.mailValue,
+        first_name: this.nameValue,
+        last_name: this.surNameValue,
+        email: this.mailValue,
         username: this.userNameValue
       };
-
-      this.$emit("new-sup", formdata);
+      suppliersSource.push({ id: uuidv4(), ...formdata });
+      e.target.reset();
     }
   }
 });
 
 const houses = Vue.component("houses", {
-  template: `<h1>houses</h1>`
-});
-
-const userTable = Vue.component("user-table", {
-  template: `<div>
+  data() {
+    return {
+      suppliersHouses: []
+    };
+  },
+  mounted() {
+    console.log(this);
+    debugger;
+    requestHousesForSupplierFromServer(this.$route.params.userId).then(
+      value => {
+        this.suppliersHouses = value;
+      }
+    );
+  },
+  template: ` <div>
   <table class="table">
 <thead>
   <tr>
-    <th scope="col">#</th>
-    <th scope="col">Имя</th>
-    <th scope="col">Фамилия</th>
-    <th scope="col">Username</th>
+    <th scope="col">Город</th>
+    <th scope="col">Адрес</th>
+    <th scope="col">Этажность</th>
+    <th scope="col">Год</th>
   </tr>
 </thead>
 <tbody>
-  <tr>
-    <th scope="row">1</th>
-    <td>Mark</td>
-    <td>Otto</td>
-    <td>@mdo</td>
-  </tr>
-  <tr>
-    <th scope="row">2</th>
-    <td>Jacob</td>
-    <td>Thornton</td>
-    <td>@fat</td>
-  </tr>
-  <tr>
-    <th scope="row">3</th>
-    <td>Larry</td>
-    <td>the Bird</td>
-    <td>@twitter</td>
+  <tr  v-for="house in suppliersHouses">
+    <td>{{house.city}}</td>
+    <td>{{house.address}}</td>
+    <td>{{house.floors}}</td>
+    <td>{{house.year}}</td>
   </tr>
 </tbody>
 </table>
@@ -87,11 +94,48 @@ const userTable = Vue.component("user-table", {
 </div>`
 });
 
+const userTable = Vue.component("user-table", {
+  data() {
+    return {
+      suppliersFromServer: []
+    };
+  },
+  mounted() {
+    requestSuppliersFromServer().then(value => {
+      this.suppliersFromServer = value;
+    });
+  },
+  template: ` <div>
+      <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Имя</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  v-for="supplier in suppliersFromServer">
+        <td><router-link :to="'/houses/'+supplier.id">{{supplier.first_name}}</router-link></td>
+        <td>{{supplier.last_name}}</td>
+        <td>{{supplier.username}}</td>
+      </tr>
+    </tbody>
+    </table>
+   <button><router-link to="/suppliers/add">Table</router-link></button> 
+    </div>`
+});
+
+const tables = Vue.component("tables", {
+  template: `<h1>houses</h1>`
+});
+
 const routes = [
   { path: "/home", component: home },
+  { path: "/tables", component: tables },
   { path: "/suppliers", component: userTable },
   { path: "/suppliers/add", component: suppliersForm },
-  { path: "/houses", component: houses }
+  { path: "/houses/:userId", component: houses }
 ];
 
 const router = new VueRouter({
@@ -99,5 +143,12 @@ const router = new VueRouter({
 });
 
 const app = new Vue({
-  router
+  el: "#app",
+  router,
+  methods: {
+    newSup: function(formdata) {
+      suppliersSource.push({ ...formdata, id: uuidv4() });
+      console.log(suppliersSource);
+    }
+  }
 }).$mount("#app");
