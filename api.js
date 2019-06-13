@@ -130,6 +130,10 @@ function requestSuppliersFromServer() {
   });
 }
 
+function suppliersToServer(formdata){
+  suppliersSource.push({ id: uuidv4(), ...formdata });
+}
+
 function requestHousesForSupplierFromServer(supplierId) {
   return new Promise((resolve) => {
     const houses = housesSurce.filter((house) => house.supplierId == supplierId);

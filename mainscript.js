@@ -42,7 +42,7 @@ const suppliersForm = Vue.component("sup-form", {
         email: this.mailValue,
         username: this.userNameValue
       };
-      suppliersSource.push({ id: uuidv4(), ...formdata });
+      suppliersToServer(formdata);
     }
   }
 });
