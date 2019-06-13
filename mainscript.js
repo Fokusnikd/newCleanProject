@@ -1,11 +1,3 @@
-function uuidv4() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
 const home = Vue.component("home", {
   template: "<h1>111</h1>"
 });
@@ -51,7 +43,6 @@ const suppliersForm = Vue.component("sup-form", {
         username: this.userNameValue
       };
       suppliersSource.push({ id: uuidv4(), ...formdata });
-      e.target.reset();
     }
   }
 });
@@ -63,7 +54,6 @@ const houses = Vue.component("houses", {
     };
   },
   mounted() {
-    console.log(this);
     debugger;
     requestHousesForSupplierFromServer(this.$route.params.userId).then(
       value => {
@@ -143,12 +133,5 @@ const router = new VueRouter({
 });
 
 const app = new Vue({
-  el: "#app",
-  router,
-  methods: {
-    newSup: function(formdata) {
-      suppliersSource.push({ ...formdata, id: uuidv4() });
-      console.log(suppliersSource);
-    }
-  }
+  router
 }).$mount("#app");
