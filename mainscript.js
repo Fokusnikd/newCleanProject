@@ -1,5 +1,5 @@
 const home = Vue.component("home", {
-  template: "<h1>111</h1>"
+  template: "<h1>It's Home</h1>"
 });
 
 const suppliersForm = Vue.component("sup-form", {
@@ -33,7 +33,6 @@ const suppliersForm = Vue.component("sup-form", {
   </form>`,
   methods: {
     handlebuttonclick: function(e) {
-      console.log(1);
       e.preventDefault();
 
       var formdata = {
@@ -42,7 +41,9 @@ const suppliersForm = Vue.component("sup-form", {
         email: this.mailValue,
         username: this.userNameValue
       };
-      suppliersToServer(formdata);
+      suppliersToServer(formdata).then(
+        router.go(-1)
+      );
     }
   }
 });
@@ -54,7 +55,6 @@ const houses = Vue.component("houses", {
     };
   },
   mounted() {
-    debugger;
     requestHousesForSupplierFromServer(this.$route.params.userId).then(
       value => {
         this.suppliersHouses = value;

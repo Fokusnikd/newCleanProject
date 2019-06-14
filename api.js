@@ -131,7 +131,10 @@ function requestSuppliersFromServer() {
 }
 
 function suppliersToServer(formdata){
-  suppliersSource.push({ id: uuidv4(), ...formdata });
+  return new Promise((resolve) =>{
+setTimeout(()=> resolve(suppliersSource.push({ id: uuidv4(), ...formdata })), 500)
+  });
+  
 }
 
 function requestHousesForSupplierFromServer(supplierId) {
