@@ -1,3 +1,4 @@
+// Массив поставщиков
 const suppliersSource = [
   {
     id: '92d33f83-5177-477a-bf7d-d8c7afe3e0c3',
@@ -71,6 +72,7 @@ const suppliersSource = [
   }
 ];
 
+// Массив домов
 const housesSurce = [
   { city: 'Shabqadar', address: '3 Petterle Street', supplierId: '5b7ba755-e408-42cf-8d49-fc5e38e2108e', floors: 22, year: 2019 },
   { city: 'Changxingbao', address: '61509 Mariners Cove Hill', supplierId: '35536963-3b46-48ca-bbe8-ccbfb84936e7', floors: 24, year: 2017 },
@@ -124,12 +126,14 @@ const housesSurce = [
   { city: 'Nūr', address: '50693 Homewood Terrace', supplierId: '35536963-3b46-48ca-bbe8-ccbfb84936e7', floors: 16, year: 2011 }
 ];
 
+// Передаёт массив поставщиков с сервера
 function requestSuppliersFromServer() {
   return new Promise((resolve) => {
     setTimeout(() => resolve(suppliersSource), 500);
   });
 }
 
+// Передает массив поставщиков на сервер
 function suppliersToServer(formdata){
   return new Promise((resolve) =>{
 setTimeout(()=> resolve(suppliersSource.push({ id: uuidv4(), ...formdata })), 500)
@@ -137,6 +141,7 @@ setTimeout(()=> resolve(suppliersSource.push({ id: uuidv4(), ...formdata })), 50
   
 }
 
+// Создает масив домов фильтруя по поставщикам
 function requestHousesForSupplierFromServer(supplierId) {
   return new Promise((resolve) => {
     const houses = housesSurce.filter((house) => house.supplierId == supplierId);
@@ -145,6 +150,7 @@ function requestHousesForSupplierFromServer(supplierId) {
   });
 }
 
+// Генератор уида
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
     var r = (Math.random() * 16) | 0,

@@ -2,6 +2,11 @@ const home = Vue.component("home", {
   template: "<h1>It's Home</h1>"
 });
 
+const tables = Vue.component("tables", {
+  template: `<h1>tables</h1>`
+});
+
+// Form for make new suppliers
 const suppliersForm = Vue.component("sup-form", {
   data: function() {
     return {
@@ -48,6 +53,7 @@ const suppliersForm = Vue.component("sup-form", {
   }
 });
 
+// Table with houses
 const houses = Vue.component("houses", {
   data() {
     return {
@@ -84,6 +90,7 @@ const houses = Vue.component("houses", {
 </div>`
 });
 
+// Table with suppliers
 const userTable = Vue.component("user-table", {
   data() {
     return {
@@ -116,10 +123,7 @@ const userTable = Vue.component("user-table", {
     </div>`
 });
 
-const tables = Vue.component("tables", {
-  template: `<h1>houses</h1>`
-});
-
+// Место, где описываются руты
 const routes = [
   { path: "/home", component: home },
   { path: "/tables", component: tables },
@@ -132,6 +136,7 @@ const router = new VueRouter({
   routes
 });
 
+// Экземпляр Vue
 const app = new Vue({
   router
 }).$mount("#app");
