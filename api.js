@@ -132,13 +132,26 @@ function requestSuppliersFromServer() {
     setTimeout(() => resolve(suppliersSource), 500);
   });
 }
+// Передает массив домов с сервера
+function requestHousesFromServer() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(housesSurce), 500);
+  });
+}
+
 
 // Передает массив поставщиков на сервер
 function suppliersToServer(formdata){
   return new Promise((resolve) =>{
 setTimeout(()=> resolve(suppliersSource.push({ id: uuidv4(), ...formdata })), 500)
-  });
-  
+  });  
+}
+
+// Передает массив домов на сервер
+function housesToServer(formdata){
+  return new Promise((resolve) =>{
+setTimeout(()=> resolve(housesSurce.push({ id: uuidv4(), ...formdata })), 500)
+  });  
 }
 
 // Создает масив домов фильтруя по поставщикам
