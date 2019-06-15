@@ -10,14 +10,18 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <title>Document</title>
+    <title>HousesSuppliers</title>
+    <style>
+    .div-padd{
+      padding:0.5px;
+    }
+    </style>
   </head>
   <body>
     <div id="app">
-      <router-link to="/home"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Home</button></router-link>
-      <router-link to="/suppliers"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Supplier</button></router-link>
-      <router-link to="/houses"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Houses</button></router-link>
-
+     <div class="div-padd"><router-link to="/home"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Home</button></router-link></div>
+      <div class="div-padd"><router-link to="/suppliers"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Supplier</button></router-link></div>
+      <div class="div-padd"><router-link to="/houses"><button type="button" class="btn btn-outline-primary btn-lg btn-block">Houses</button></router-link></div>
       <router-view></router-view>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>

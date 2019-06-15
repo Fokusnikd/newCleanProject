@@ -1,5 +1,5 @@
 const home = Vue.component("home", {
-  template: "<h1>It's Home</h1>"
+  template: `<div align="center" style="margin-top: 50px;"><img src="home.png" alt="Responsive image"></div>`
 });
 
 // Form for make new suppliers
