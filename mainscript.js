@@ -1,7 +1,8 @@
 const home = Vue.component("home", {
-  template: "<h1>111</h1>"
+  template: `<div align="center" style="margin-top: 50px;"><img src="home.png" alt="Responsive image"></div>`
 });
 
+// Form for make new suppliers
 const suppliersForm = Vue.component("sup-form", {
   data: function() {
     return {
@@ -33,7 +34,6 @@ const suppliersForm = Vue.component("sup-form", {
   </form>`,
   methods: {
     handlebuttonclick: function(e) {
-      console.log(1);
       e.preventDefault();
 
       var formdata = {
@@ -42,19 +42,64 @@ const suppliersForm = Vue.component("sup-form", {
         email: this.mailValue,
         username: this.userNameValue
       };
-      suppliersToServer(formdata);
+      suppliersToServer(formdata).then(router.go(-1));
     }
   }
 });
 
-const houses = Vue.component("houses", {
+// Form for make new houses
+const housesForm = Vue.component("house-form", {
+  data: function() {
+    return {
+      cityValue: "",
+      addressValue: "",
+      floorValue: "",
+      yearValue: ""
+    };
+  },
+  template: `<form  @submit="handlebuttonclick($event)">
+    <div class="form-group">
+    <label for="exampleInputCity">City</label>
+    <input type="text" v-model="cityValue" class="form-control" id="exampleInputCity" placeholder="Your city">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputAddress">Adress</label>
+    <input type="text" v-model="addressValue" class="form-control" id="exampleInputAddress" placeholder="Address">
+  </div>
+  <div class="form-group">
+  <label for="exampleInputFloor">Floor</label>
+  <input type="text" v-model="floorValue" class="form-control" id="exampleInputFloor" placeholder="Floor">
+</div>
+
+    <div class="form-group">
+    <label for="exampleInputHouseYear">Year</label>
+    <input type="text" v-model="yearValue" class="form-control" id="exampleInputHouseYear" placeholder="Year">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  </form>`,
+  methods: {
+    handlebuttonclick: function(e) {
+      e.preventDefault();
+
+      var formdata = {
+        city: this.cityValue,
+        address: this.addressValue,
+        floors: this.floorValue,
+        year: this.yearValue
+      };
+      housesToServer(formdata).then(router.go(-1));
+    }
+  }
+});
+
+// Table with houses
+const suppliersHouses = Vue.component("suppliersHouses", {
   data() {
     return {
       suppliersHouses: []
     };
   },
   mounted() {
-    debugger;
     requestHousesForSupplierFromServer(this.$route.params.userId).then(
       value => {
         this.suppliersHouses = value;
@@ -84,6 +129,7 @@ const houses = Vue.component("houses", {
 </div>`
 });
 
+// Table with suppliers
 const userTable = Vue.component("user-table", {
   data() {
     return {
@@ -106,32 +152,66 @@ const userTable = Vue.component("user-table", {
     </thead>
     <tbody>
       <tr  v-for="supplier in suppliersFromServer">
-        <td><router-link :to="'/houses/'+supplier.id">{{supplier.first_name}}</router-link></td>
+        <td><router-link :to="'/suppliers/'+supplier.id">{{supplier.first_name}}</router-link></td>
         <td>{{supplier.last_name}}</td>
         <td>{{supplier.username}}</td>
       </tr>
     </tbody>
     </table>
-   <button><router-link to="/suppliers/add">Table</router-link></button> 
+   <router-link to="/suppliers/add"><button class="btn btn-primary">New Supplier</button></router-link>
     </div>`
 });
 
-const tables = Vue.component("tables", {
-  template: `<h1>houses</h1>`
+// Table with houses
+const houseTable = Vue.component("house-table", {
+  data() {
+    return {
+      housesFromServer: []
+    };
+  },
+  mounted() {
+    requestHousesFromServer().then(value => {
+      this.housesFromServer = value;
+    });
+  },
+  template: ` <div>
+      <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Город</th>
+        <th scope="col">Адресс</th>
+        <th scope="col">Этаж</th>
+        <th scope="col">Год</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="house in housesFromServer">
+        <td>{{house.city}}</td>
+        <td>{{house.address}}</td>
+        <td>{{house.floors}}</td>
+        <td>{{house.year}}</td>
+      </tr>
+    </tbody>
+    </table>
+    <router-link to="/houses/add"><button class="btn btn-primary">New House</button></router-link> 
+    </div>`
 });
 
+// Место, где описываются руты
 const routes = [
   { path: "/home", component: home },
-  { path: "/tables", component: tables },
+  { path: "/houses", component: houseTable },
+  { path: "/houses/add", component: housesForm },
   { path: "/suppliers", component: userTable },
   { path: "/suppliers/add", component: suppliersForm },
-  { path: "/houses/:userId", component: houses }
+  { path: "/suppliers/:userId", component: suppliersHouses }
 ];
 
 const router = new VueRouter({
   routes
 });
 
+// Экземпляр Vue
 const app = new Vue({
   router
 }).$mount("#app");
