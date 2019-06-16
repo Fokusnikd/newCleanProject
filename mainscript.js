@@ -2,6 +2,10 @@ const home = Vue.component("home", {
   template: `<div align="center" style="margin-top: 50px;"><img src="home.png" alt="Responsive image"></div>`
 });
 
+const suppliersEdit = Vue.component("suppliersEdit-form", {
+  template: `<div align="center" style="margin-top: 50px;"><img src="home.png" alt="Responsive image"></div>`
+});
+
 // Form for make new suppliers
 const suppliersForm = Vue.component("sup-form", {
   data: function() {
@@ -130,7 +134,7 @@ const suppliersHouses = Vue.component("suppliersHouses", {
 });
 
 // Table with suppliers
-const userTable = Vue.component("user-table", {
+const suppliersTable = Vue.component("supplier-table", {
   data() {
     return {
       suppliersFromServer: []
@@ -155,6 +159,10 @@ const userTable = Vue.component("user-table", {
         <td><router-link :to="'/suppliers/'+supplier.id">{{supplier.first_name}}</router-link></td>
         <td>{{supplier.last_name}}</td>
         <td>{{supplier.username}}</td>
+        <td><router-link :to="'/suppliers/edit/'+supplier.id">
+            <button class="btn btn-outline-primary">Edit Supplier</button>
+            </router-link>
+        </td>
       </tr>
     </tbody>
     </table>
@@ -202,8 +210,9 @@ const routes = [
   { path: "/home", component: home },
   { path: "/houses", component: houseTable },
   { path: "/houses/add", component: housesForm },
-  { path: "/suppliers", component: userTable },
+  { path: "/suppliers", component: suppliersTable },
   { path: "/suppliers/add", component: suppliersForm },
+  { path: "/suppliers/edit/:userId", component: suppliersEdit },
   { path: "/suppliers/:userId", component: suppliersHouses }
 ];
 
